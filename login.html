@@ -1,0 +1,11 @@
+<div content-for="title"><span>Please identify yourself.</span></div>
+<div class="scrollable">
+    <div class="scrollable-content">
+            <form role="form">
+                <div class="form-group">
+                    <input ng-model="user.token" type="text" class="form-control" id="exampleInputEmail1" placeholder="Paste your GitHub Oauth token here.">
+                </div>
+                <button class="btn btn-block btn-default" ng-click="update(user)">Submit</button>
+            </form>
+    </div>
+</div>

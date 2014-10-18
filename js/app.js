@@ -1,22 +1,41 @@
 var app = angular.module('HubStalk', [
     "ngRoute",
+    "LocalStorageModule",
     "ngTouch",
     "mobile-angular-ui"
 ]);
 
-var gh = new Octokit({
-    token: ""
+app.config(function (localStorageServiceProvider) {
+  localStorageServiceProvider
+    .setPrefix('hubStalk')
 });
+
+
 
 app.config(function ($routeProvider) {
     $routeProvider.when('/', {templateUrl: "home.html"});
+    $routeProvider.when('/login', {templateUrl: "login.html", controller: "LoginController"});
     $routeProvider.when('/following', {templateUrl: "following.html", controller: 'FollowingController'});
     $routeProvider.when('/starred', {templateUrl: "starred.html", controller: 'StarredController'});
     $routeProvider.when('/starredby/:login', {templateUrl: "user-starred.html", controller: 'StarredByController'});
-    $routeProvider.when('/repo/:author/:name', {templateUrl: "repo.html"});
+    $routeProvider.when('/repo/:author/:name', {templateUrl: "repo.html", controller: 'RepoController'});
 });
 
-app.controller('MainController', function ($rootScope, $scope) {
+app.run( function($rootScope, $location) {
+
+    // register listener to watch route changes
+    $rootScope.$on( "$routeChangeStart", function(event, next, current) {
+      if ( $rootScope.github == null ) {
+        // no logged user, we should be going to #login
+        if (next.templateUrl != "login.html" ) {
+          // not going to #login, we should redirect now
+          $location.path( "/login" );
+        }
+      }         
+    });
+ })
+
+app.controller('MainController', function ($rootScope, $scope, localStorageService) {
 
     $rootScope.$on("$routeChangeStart", function () {
         $rootScope.loading = true;
@@ -25,14 +44,31 @@ app.controller('MainController', function ($rootScope, $scope) {
     $rootScope.$on("$routeChangeSuccess", function () {
         $rootScope.loading = false;
     });
+    
+    if (localStorageService.get("oauthToken"))
+    {
+        $rootScope.github = new Octokit({token: localStorageService.get("oauthToken")});
+    } else {
+      return;  
+    }
 
-    $rootScope.user = gh.getUser();
+    $rootScope.user = $rootScope.github.getUser();
 
     $rootScope.user.getReceivedEvents().then(function (events) {
         $scope.events = events;
     });
 
     
+});
+
+/**
+ * Login view
+ */
+app.controller('LoginController', function ($rootScope, $scope, localStorageService) {
+    $scope.update = function(user) {
+        localStorageService.set("oauthToken", user.token);
+        $rootScope.github = new Octokit({token: localStorageService.get("oauthToken")});
+    };
 });
 
 /**
@@ -48,9 +84,9 @@ app.controller('StarredController', function ($rootScope, $scope) {
  * 
  */
 app.controller('StarredByController', function ($rootScope, $scope, $routeParams) {
-    var user = gh.getUser($routeParams.login);
-    user.getStarred().then(function (starred, user) {$scope.starred = starred; $scope.user = user;});
-})
+    var user = $rootScope.github.getUser($routeParams.login);
+    user.getStarred().then(function (starred, user) {$scope.starred = starred; $scope.login = $routeParams.login;});
+});
 
 /**
  * Users that the current user follows.
@@ -61,8 +97,10 @@ app.controller('FollowingController', function ($rootScope, $scope) {
 });
 
 
-app.controller('RepoController', function ($rootScope, $scope) {
+app.controller('RepoController', function ($rootScope, $scope, $routeParams) {
 
-    $scope.repo = gh.getRepo()
+    $rootScope.github.getRepo($routeParams.author, $routeParams.name).getInfo().then(
+            function(repo){$scope.repo = repo;}
+    );
 });
 

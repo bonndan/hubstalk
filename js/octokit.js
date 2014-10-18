@@ -694,6 +694,9 @@
             this.repoUser = repoUser;
             this.repoName = repoName;
             _repoPath = "/repos/" + this.repoUser + "/" + this.repoName;
+            this.getInfo = function() {
+              return _request('GET', "" + _repoPath);
+            };
             this.deleteRepo = function() {
               return _request('DELETE', "" + _repoPath);
             };

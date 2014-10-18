@@ -1,8 +1,23 @@
-<div content-for="title"><span>Repo {{repo.name}}</span></div>
+<div content-for="title"><span>{{repo.name}}</span></div>
 <div class="scrollable">
   <div class="scrollable-content">
-    <div class="list-group">
-      {{ repo }}
+      <div class="list-group">
+      <div class="list-group-item">
+        <h1>{{ repo.name }}</h1>
+         
+        <p>{{ repo.description }}</p>
+        
+        <ul class="list-unstyled">
+            <li ng-if="repo.homepage">{{ repo.homepage }}</li>
+            <li ng-if="repo.updated_at">last update: {{ repo.updated_at }}</li>
+            <li ng-if="repo.language">Language:{{ repo.language }}</li>
+            <li ng-if="repo.stargazers_count"><i class="fa fa-star"></i> {{ repo.stargazers_count }}</li>
+        </ul>
+        <br />
+        <a class="btn btn-default btn-block" href="{{ repo.html_url }}" target="_blank"><i class="fa fa-github"></i> View on GitHub</a>
+      </div>
+
     </div>
+      
   </div>
 </div>
