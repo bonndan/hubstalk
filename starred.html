@@ -1,0 +1,14 @@
+<div content-for="title"><span>Starred</span></div>
+<div class="scrollable">
+  <div class="scrollable-content">
+    <div class="list-group">
+        <div ng-repeat="item in starred" class="list-group-item">
+            <h3>{{ item.name }}</h3>
+            {{ item.description }}<br />
+            <a  href="mailto:?subject=have a look at {{ item.name }}&body={{ item.html_url }}" > Recommend<i class="fa fa-chevron-right pull-right"></i></a>
+            <br />
+        </div>
+      
+    </div>
+  </div>
+</div>

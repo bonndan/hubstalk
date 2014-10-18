@@ -1,0 +1,11 @@
+<div content-for="title"><span>Home</span></div>
+<div class="scrollable">
+  <div class="scrollable-content">
+    <div class="list-group">
+      <a ng-repeat="item in events" ng-if="item.type == 'WatchEvent'" href="#/repo/{{ item.repo.name }}" class="list-group-item">
+          <img src=" {{ item.actor.avatar_url }}" class="img-responsive" style="max-height: 50px"/> {{ item.actor.login }} starred {{ item.repo.name }}
+            <i class="fa fa-chevron-right pull-right"></i>
+      </a>
+    </div>
+  </div>
+</div>

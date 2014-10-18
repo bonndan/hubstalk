@@ -1,0 +1,13 @@
+<div content-for="title"><span>Starred by {{ user.login }}</span></div>
+<div class="scrollable">
+  <div class="scrollable-content">
+    <div class="list-group">
+        <div ng-repeat="item in starred" class="list-group-item">
+            <h3>{{ item.name }}</h3>
+            {{ item.description }}<br />
+            <br />
+        </div>
+      
+    </div>
+  </div>
+</div>

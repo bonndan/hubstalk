@@ -1,0 +1,10 @@
+<div content-for="title"><span>Following</span></div>
+<div class="scrollable">
+  <div class="scrollable-content">
+    <div class="list-group">
+      <a ng-repeat="item in following" href="#/starredby/{{ item.login }}" class="list-group-item">
+          <img src="{{ item.avatar_url }}" class="img-responsive" style="max-height: 50px"/> {{ item.login }} <i class="fa fa-chevron-right pull-right"></i>
+      </a>
+    </div>
+  </div>
+</div>
