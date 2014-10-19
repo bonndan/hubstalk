@@ -19,7 +19,7 @@
     </head>
     <body ng-app="HubStalk" ng-controller="MainController">
         <div class="sidebar sidebar-left" toggleable parent-active-class="sidebar-left-in" id="mainSidebar">
-            <h1 class="app-name"><i class="fa fa-binoculars  "></i> HubStalk</h1>
+            <h1 class="app-name"><i class="fa fa-binoculars"></i> HubStalk</h1>
 
             <div class="scrollable">
                 <div class="scrollable-content" ng-if="$root.github">
@@ -27,6 +27,7 @@
                         <a class="list-group-item" href="#/"> <i class="fa fa-home"></i> Home</a>
                         <a class="list-group-item" href="#/following"><i class="fa fa-users"> Following</i></a>
                         <a class="list-group-item" href="#/starred" ><i class="fa fa-star fa-navbar"> Your starred repos</i></a>
+                        <a class="list-group-item" href="#/review" ><span class="badge pull-right">{{ $root.review.length }}</span> <i class="fa fa-flag fa-navbar"> To review </i></a>
                         <a class="list-group-item" href="#/login" ><i class="fa fa-question fa-navbar"> Identify yourself</i></a>
                     </div>
 

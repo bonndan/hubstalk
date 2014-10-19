@@ -565,8 +565,7 @@
               options.name = name;
               return _request('POST', "/user/repos", options);
             };
-            this.getReceivedEvents = function(username, page) {
-              
+            this.getReceivedEvents = function(page) {
               
               return this.getInfo().then(function(info, page){
                   var currentPage;
@@ -576,8 +575,6 @@
                   currentPage = '?page=' + page;
                   return _request('GET', '/users/' + info.login + '/received_events' + currentPage, null);
               });
-                  
-              
             };
             this.getStars = function() {
               return _request('GET', "/user/starred");

@@ -3,9 +3,13 @@
   <div class="scrollable-content">
     <div class="list-group">
       <a ng-repeat="item in events" ng-if="item.type == 'WatchEvent'" href="#/repo/{{ item.repo.name }}" class="list-group-item">
-          <img src=" {{ item.actor.avatar_url }}" class="img-responsive" style="max-height: 50px"/> {{ item.actor.login }} starred {{ item.repo.name }}
+          <img ng-if="item.actor.avatar_url" src="{{ item.actor.avatar_url }}" class="img-responsive pull-left" style="max-height: 3em; padding-right:0.5em"/> 
+          {{ item.actor.login }} starred {{ item.repo.name }}
             <i class="fa fa-chevron-right pull-right"></i>
+            <br class="clearfix" />
+            <br class="clearfix" />
       </a>
+        
     </div>
   </div>
 </div>
