@@ -43,6 +43,15 @@ app.run(function ($rootScope, $location, localStorageService) {
         }
         $rootScope.review = review;
     }
+
+    if (!$rootScope.comments) {
+        var comments = localStorageService.get('comments');
+        if (!comments) {
+            comments = {};
+            localStorageService.set('comments', comments);
+        }
+        $rootScope.comments = comments;
+    }
 })
 
 app.
@@ -116,15 +125,15 @@ app.
                 });
             });
         })
-        
+
         /**
          * Repos to review
          * 
          */
-       .controller('ReviewController', function ($scope, localStorageService) {
-           $scope.review = localStorageService.get('review');
-       })
-;
+        .controller('ReviewController', function ($scope, localStorageService) {
+            $scope.review = localStorageService.get('review');
+        })
+        ;
 
 /**
  * Users that the current user follows.
@@ -142,14 +151,29 @@ app.controller('FollowingController', function ($rootScope, $scope) {
  * Display a repo.
  */
 app.controller('RepoController', function ($rootScope, $scope, $routeParams, localStorageService) {
+    
+    
+    
     $rootScope.github.getRepo($routeParams.author, $routeParams.name).getInfo().then(
             function (repo) {
                 $scope.$apply(function () {
                     $scope.repo = repo;
+                    if ($rootScope.comments[repo.full_name])
+                        $scope.comment = {text: $rootScope.comments[repo.full_name]};
+                    else 
+                        $scope.comment = {text: null};
                 });
             }
     );
-    
+
+    $scope.$watch('comment.text', function() {
+        if ($scope.repo)
+        {
+            $rootScope.comments[$scope.repo.full_name] = $scope.comment.text;
+            localStorageService.set("comments", $rootScope.comments);
+        }
+    });
+   
     $scope.review = function (repo) {
         var review = localStorageService.get('review');
         var index = review.indexOf(repo.full_name);
@@ -159,17 +183,25 @@ app.controller('RepoController', function ($rootScope, $scope, $routeParams, loc
         } else {
             review.splice(index, 1);
         }
-        
+
         $scope.listed = index !== -1;
         localStorageService.set('review', review);
-    };
+    };  
 });
 
 app.directive('reviewrepo', function () {
-        
     return {
         replace: 'true',
         scope: true,
         template: '<a class="btn btn-default btn-block" ng-click="review(repo)"><i class="fa fa-flag"></i><span ng-if="listed == true">Remove from review list</span><span ng-if="listed != true"> Review later</span></a>'
+    };
+});
+
+app.directive('commentrepo', function () {
+
+    return {
+        replace: 'true',
+        scope: true,
+        template: '<textarea class="well form-control" ng-model="comment.text" name="comment" />'
     };
 });

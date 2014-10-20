@@ -13,9 +13,16 @@
             <li ng-if="repo.language">Language:{{ repo.language }}</li>
             <li ng-if="repo.stargazers_count"><i class="fa fa-star"></i> {{ repo.stargazers_count }}</li>
         </ul>
+        
+        <div commentrepo></div>
         <br />
         <a class="btn btn-default btn-block" href="{{ repo.html_url }}" target="_blank"><i class="fa fa-github"></i> View on GitHub</a>
+        <a class="btn btn-default btn-block" href="mailto:?subject=have a look at {{ repo.name }}&body={{ repo.html_url }}" >
+            <i class="fa fa-envelope"></i> Recommend
+        </a>
+            
         <div reviewrepo></div>
+        
       </div>
 
     </div>
