@@ -1,7 +1,12 @@
 #HubStalk
 
-HubStalk is a mobile app to track starred repos in GitHub and discover new interesting ones. See the https://github.com/bonndan/hubstalk/tree/develop/screens subfolder
+HubStalk is a mobile app to track starred repos in GitHub and discover new interesting ones. 
+See the https://github.com/bonndan/hubstalk/tree/develop/screens subfolder
 for some screenshots.
+
+## Test Drive?
+
+Visit http://bonndan.github.io/hubstalk/ and have an api key ready.
 
 ## Features
 
