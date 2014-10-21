@@ -18,11 +18,23 @@ module.exports = function (grunt) {
                     ]
                 }
             }
+        },
+        
+        concat: {
+            options: {
+                separator: ';'
+            },
+            dist: {
+                src: ["bower_components/mobile-angular-ui/dist/css/mobile-angular-ui-base.min.css"],
+                dest: 'css/app.css'
+            }
         }
     });
 
     // Load required modules
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    
     // Task definitions
-    grunt.registerTask('default', ['uglify']);
+    grunt.registerTask('default', ['uglify', 'concat']);
 };
